@@ -7,6 +7,7 @@ import {
   timestamp,
   uuid,
 } from "drizzle-orm/pg-core";
+import { id } from "zod/v4/locales";
 
 export const userTable = pgTable("user", {
   id: text("id").primaryKey(),
@@ -22,6 +23,12 @@ export const userTable = pgTable("user", {
   updatedAt: timestamp("updated_at")
     .$defaultFn(() => /* @__PURE__ */ new Date())
     .notNull(),
+});
+
+export const userRelations = relations(userTable, (params) => {
+  return {
+    shippingAdresses: params.many(shippingAdressTable),
+  };
 });
 
 export const sessionTable = pgTable("session", {
@@ -122,6 +129,38 @@ export const productVariantRelations = relations(
       product: params.one(productTable, {
         fields: [productVariantTable.productId],
         references: [productTable.id],
+      }),
+    };
+  },
+);
+
+export const shippingAdressTable = pgTable("shipping_adress", {
+  id: uuid().primaryKey().defaultRandom(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => userTable.id, { onDelete: "cascade" }),
+  recipientName: text("recipient_name").notNull(),
+  street: text().notNull(),
+  number: text().notNull(),
+  complement: text(),
+  city: text().notNull(),
+  state: text().notNull(),
+  neighborhood: text().notNull(),
+  zipCode: text("zip_code").notNull(),
+  country: text().notNull(),
+  phone: text().notNull(),
+  email: text().notNull(),
+  cpfOrCnpj: text("cpf_or_cnpj").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const shippingAdressRelations = relations(
+  shippingAdressTable,
+  (params) => {
+    return {
+      user: params.one(userTable, {
+        fields: [shippingAdressTable.userId],
+        references: [userTable.id],
       }),
     };
   },
