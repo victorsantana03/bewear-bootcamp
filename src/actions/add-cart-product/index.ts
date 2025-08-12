@@ -33,7 +33,7 @@ export const addProductToCart = async (data: AddProductToCartSchema) => {
     where: (cart, { eq }) => eq(cart.userId, session.user.id),
   });
 
-  const cartId = cart?.id;
+  let cartId = cart?.id;
 
   if (!cartId) {
     const [newCart] = await db
