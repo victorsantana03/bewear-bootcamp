@@ -22,6 +22,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { shippingAdressTable } from "@/db/schema";
 import { useCreateShippingAdress } from "@/hooks/mutations/use-create-shipping-address";
+import { useUpdateCartShippingAdress } from "@/hooks/mutations/use-update-cart-shipping-adress";
 import { useUserAdresses } from "@/hooks/queries/use-user-adresses";
 
 const formSchema = z.object({
@@ -42,11 +43,18 @@ type FormValues = z.infer<typeof formSchema>;
 
 interface AdressesProps {
   shippingAdresses: (typeof shippingAdressTable.$inferSelect)[];
+  defaultShippingAdressId: string | null;
 }
 
-const Addresses = ({ shippingAdresses }: AdressesProps) => {
-  const [selectedAdress, setSelectedAdress] = useState<string | null>(null);
+const Addresses = ({
+  shippingAdresses,
+  defaultShippingAdressId,
+}: AdressesProps) => {
+  const [selectedAdress, setSelectedAdress] = useState<string | null>(
+    defaultShippingAdressId || null,
+  );
   const createShippingAdressMutation = useCreateShippingAdress();
+  const updateCartShippingAdressMutation = useUpdateCartShippingAdress();
   const { data: adresses, isLoading } = useUserAdresses({
     initialData: shippingAdresses,
   });
@@ -74,8 +82,25 @@ const Addresses = ({ shippingAdresses }: AdressesProps) => {
       toast.success("Endereço criado com sucesso!");
       form.reset();
       setSelectedAdress(newAdress.id);
+      await updateCartShippingAdressMutation.mutateAsync({
+        shippingAdressId: newAdress.id,
+      });
+      toast.success("Endereço vinculado ao carrinho!");
     } catch (error) {
       toast.error("Erro ao criar endereço. Tente novamente.");
+      console.error(error);
+    }
+  };
+  const handleGoToPayment = async () => {
+    if (!selectedAdress || selectedAdress === "add_new") return;
+
+    try {
+      await updateCartShippingAdressMutation.mutateAsync({
+        shippingAdressId: selectedAdress,
+      });
+      toast.success("Endereço selecionado para entrega!");
+    } catch (error) {
+      toast.error("Erro ao selecionar endereço. Tente novamente.");
       console.error(error);
     }
   };
@@ -131,6 +156,20 @@ const Addresses = ({ shippingAdresses }: AdressesProps) => {
               </CardContent>
             </Card>
           </RadioGroup>
+        )}
+
+        {selectedAdress && selectedAdress !== "add_new" && (
+          <div className="mt-4">
+            <Button
+              onClick={handleGoToPayment}
+              className="w-full"
+              disabled={updateCartShippingAdressMutation.isPending}
+            >
+              {updateCartShippingAdressMutation.isPending
+                ? "Processando..."
+                : "Ir para pagamento"}
+            </Button>
+          </div>
         )}
 
         {selectedAdress === "add_new" && (
@@ -319,9 +358,13 @@ const Addresses = ({ shippingAdresses }: AdressesProps) => {
               <Button
                 type="submit"
                 className="w-full"
-                disabled={createShippingAdressMutation.isPending}
+                disabled={
+                  createShippingAdressMutation.isPending ||
+                  updateCartShippingAdressMutation.isPending
+                }
               >
-                {createShippingAdressMutation.isPending
+                {createShippingAdressMutation.isPending ||
+                updateCartShippingAdressMutation.isPending
                   ? "Salvando..."
                   : "Salvar endereço"}
               </Button>
