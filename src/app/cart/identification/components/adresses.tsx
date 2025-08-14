@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { PatternFormat } from "react-number-format";
+import { toast } from "sonner";
 import z from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useCreateShippingAdress } from "@/hooks/mutations/use-create-shipping-address";
 
 const formSchema = z.object({
   email: z.email("E-mail inválido"),
@@ -26,7 +28,7 @@ const formSchema = z.object({
   cpf: z.string().min(14, "CPF inválido"),
   phone: z.string().min(15, "Celular inválido"),
   zipCode: z.string().min(9, "CEP inválido"),
-  address: z.string().min(1, "Endereço é obrigatório"),
+  adress: z.string().min(1, "Endereço é obrigatório"),
   number: z.string().min(1, "Número é obrigatório"),
   complement: z.string().optional(),
   neighborhood: z.string().min(1, "Bairro é obrigatório"),
@@ -38,6 +40,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 const Addresses = () => {
   const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
+  const createShippingAdressMutation = useCreateShippingAdress();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -47,7 +50,7 @@ const Addresses = () => {
       cpf: "",
       phone: "",
       zipCode: "",
-      address: "",
+      adress: "",
       number: "",
       complement: "",
       neighborhood: "",
@@ -56,8 +59,16 @@ const Addresses = () => {
     },
   });
 
-  const onSubmit = (values: FormValues) => {
-    console.log(values);
+  const onSubmit = async (values: FormValues) => {
+    try {
+      await createShippingAdressMutation.mutateAsync(values);
+      toast.success("Endereço criado com sucesso!");
+      form.reset();
+      setSelectedAddress(null);
+    } catch (error) {
+      toast.error("Erro ao criar endereço. Tente novamente.");
+      console.error(error);
+    }
   };
 
   return (
@@ -174,7 +185,7 @@ const Addresses = () => {
 
                 <FormField
                   control={form.control}
-                  name="address"
+                  name="adress"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Endereço</FormLabel>
@@ -260,8 +271,14 @@ const Addresses = () => {
                 />
               </div>
 
-              <Button type="submit" className="w-full">
-                Salvar endereço
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={createShippingAdressMutation.isPending}
+              >
+                {createShippingAdressMutation.isPending
+                  ? "Salvando..."
+                  : "Salvar endereço"}
               </Button>
             </form>
           </Form>
