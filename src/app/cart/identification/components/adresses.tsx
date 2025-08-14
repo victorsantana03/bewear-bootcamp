@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useCreateShippingAdress } from "@/hooks/mutations/use-create-shipping-address";
+import { useUserAdresses } from "@/hooks/queries/use-user-adresses";
 
 const formSchema = z.object({
   email: z.email("E-mail inválido"),
@@ -39,8 +40,9 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const Addresses = () => {
-  const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
+  const [selectedAdress, setSelectedAdress] = useState<string | null>(null);
   const createShippingAdressMutation = useCreateShippingAdress();
+  const { data: adresses, isLoading } = useUserAdresses();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -61,10 +63,10 @@ const Addresses = () => {
 
   const onSubmit = async (values: FormValues) => {
     try {
-      await createShippingAdressMutation.mutateAsync(values);
+      const newAdress = await createShippingAdressMutation.mutateAsync(values);
       toast.success("Endereço criado com sucesso!");
       form.reset();
-      setSelectedAddress(null);
+      setSelectedAdress(newAdress.id);
     } catch (error) {
       toast.error("Erro ao criar endereço. Tente novamente.");
       console.error(error);
@@ -77,18 +79,54 @@ const Addresses = () => {
         <CardTitle>Identificação</CardTitle>
       </CardHeader>
       <CardContent>
-        <RadioGroup value={selectedAddress} onValueChange={setSelectedAddress}>
-          <Card>
-            <CardContent>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="add_new" id="add_new" />
-                <Label htmlFor="add_new">Adicionar novo endereço</Label>
+        {isLoading ? (
+          <div className="py-4 text-center">
+            <p>Carregando endereços...</p>
+          </div>
+        ) : (
+          <RadioGroup value={selectedAdress} onValueChange={setSelectedAdress}>
+            {adresses?.length === 0 && (
+              <div className="py-4 text-center">
+                <p className="text-muted-foreground">
+                  Você ainda não possui endereços cadastrados.
+                </p>
               </div>
-            </CardContent>
-          </Card>
-        </RadioGroup>
+            )}
+            {adresses?.map((adres) => (
+              <Card key={adres.id}>
+                <CardContent>
+                  <div className="flex items-start space-x-2">
+                    <RadioGroupItem value={adres.id} id={adres.id} />
+                    <div className="flex-1">
+                      <Label htmlFor={adres.id} className="cursor-pointer">
+                        <div>
+                          <p className="text-sm">
+                            {adres.recipientName} • {adres.street},{" "}
+                            {adres.number}
+                            {adres.complement && `, ${adres.complement}`},{" "}
+                            {adres.neighborhood}, {adres.city} - {adres.state} •
+                            CEP: {adres.zipCode}
+                          </p>
+                        </div>
+                      </Label>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
 
-        {selectedAddress === "add_new" && (
+            <Card>
+              <CardContent>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="add_new" id="add_new" />
+                  <Label htmlFor="add_new">Adicionar novo endereço</Label>
+                </div>
+              </CardContent>
+            </Card>
+          </RadioGroup>
+        )}
+
+        {selectedAdress === "add_new" && (
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
