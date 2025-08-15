@@ -9,6 +9,7 @@
    <img src="https://api.iconify.design/simple-icons:drizzle.svg?color=%23a6da95" width="40"/> &nbsp
    <img src="https://api.iconify.design/simple-icons:postgresql.svg?color=%23336791" width="40"/> &nbsp
    <img src="https://api.iconify.design/simple-icons:betterauth.svg?color=%23fff" width="40"/> &nbsp
+   <img src="https://api.iconify.design/simple-icons:vercel.svg?color=%23fff" width="40"/> &nbsp
    
   
 </div>
