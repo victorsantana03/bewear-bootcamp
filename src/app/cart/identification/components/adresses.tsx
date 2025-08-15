@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { PatternFormat } from "react-number-format";
@@ -24,6 +25,8 @@ import { shippingAdressTable } from "@/db/schema";
 import { useCreateShippingAdress } from "@/hooks/mutations/use-create-shipping-address";
 import { useUpdateCartShippingAdress } from "@/hooks/mutations/use-update-cart-shipping-adress";
 import { useUserAdresses } from "@/hooks/queries/use-user-adresses";
+
+import { formatAddress } from "../../helpers/addres";
 
 const formSchema = z.object({
   email: z.email("E-mail inválido"),
@@ -50,6 +53,7 @@ const Addresses = ({
   shippingAdresses,
   defaultShippingAdressId,
 }: AdressesProps) => {
+  const router = useRouter();
   const [selectedAdress, setSelectedAdress] = useState<string | null>(
     defaultShippingAdressId || null,
   );
@@ -101,6 +105,7 @@ const Addresses = ({
       toast.success("Endereço selecionado para entrega!", {
         position: "top-center",
       });
+      router.push("/cart/confirmation");
     } catch (error) {
       toast.error("Erro ao selecionar endereço. Tente novamente.");
       console.error(error);
@@ -134,13 +139,7 @@ const Addresses = ({
                     <div className="flex-1">
                       <Label htmlFor={adres.id} className="cursor-pointer">
                         <div>
-                          <p className="text-sm">
-                            {adres.recipientName} • {adres.street},{" "}
-                            {adres.number}
-                            {adres.complement && `, ${adres.complement}`},{" "}
-                            {adres.neighborhood}, {adres.city} - {adres.state} •
-                            CEP: {adres.zipCode}
-                          </p>
+                          <p className="text-sm">{formatAddress(adres)}</p>
                         </div>
                       </Label>
                     </div>
