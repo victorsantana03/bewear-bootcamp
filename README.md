@@ -1,36 +1,18 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+<h1>🛒 E-commerce bewear </h1>
+<div style="display: flex; align-items: center;">
+  <img src="https://api.iconify.design/simple-icons:react.svg?color=%2361dafb" width="40"/> &nbsp
+  <img src="https://api.iconify.design/simple-icons:nextdotjs.svg?color=%23fff" width="40"/> &nbsp
+  <img src="https://api.iconify.design/simple-icons:typescript.svg?color=%23007acc" width="40"/> &nbsp
+  <img src="https://api.iconify.design/simple-icons:tailwindcss.svg?color=%2338bdf8" width="40"/> &nbsp
+  <img src="https://api.iconify.design/simple-icons:shadcnui.svg?color=%23dedede" width="40"/> &nbsp
+  <img src="https://api.iconify.design/simple-icons:zod.svg?color=%23274d82" width="40"/> &nbsp
+   <img src="https://api.iconify.design/simple-icons:drizzle.svg?color=%23a6da95" width="40"/> &nbsp
+   <img src="https://api.iconify.design/simple-icons:postgresql.svg?color=%23336791" width="40"/> &nbsp
+   <img src="https://api.iconify.design/simple-icons:betterauth.svg?color=%23fff" width="40"/> &nbsp
+   <img src="https://api.iconify.design/simple-icons:vercel.svg?color=%23fff" width="40"/> &nbsp
+</div> <br/>
+<h3>Este projeto foi desenvolvido com React, Next.js, Drizzle ORM, PostgreSQL, Shadcn UI e autenticação via Google.</h3>
+<br/>
+<img width="1920" height="990" alt="Desktop Screenshot 2025 08 15 - 16 57 07 06" src="https://github.com/user-attachments/assets/887d4ec0-d952-48a6-ae67-a35d0f8a3b40" /> <br/>
+<img width="1920" height="995" alt="Desktop Screenshot 2025 08 15 - 16 57 15 91" src="https://github.com/user-attachments/assets/eceea643-5a46-43ad-8e36-f27a9791c0bd" /> <br/>
+<img width="1920" height="990" alt="Desktop Screenshot 2025 08 15 - 16 58 00 52" src="https://github.com/user-attachments/assets/6b87fc75-3035-40ca-8610-b948b01aadfb" />
