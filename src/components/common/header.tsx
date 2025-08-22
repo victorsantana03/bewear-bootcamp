@@ -20,7 +20,7 @@ import Cart from "./cart";
 const Header = () => {
   const { data: session } = authClient.useSession();
   return (
-    <header className="flex items-center justify-between p-5">
+    <header className="mb-12 flex items-center justify-between border-b p-5 md:px-20 lg:px-40">
       <Link href="/">
         <Image src="/logo.svg" alt="Bewear" width={100} height={26.14} />
       </Link>

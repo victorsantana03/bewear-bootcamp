@@ -49,7 +49,7 @@ const ConfirmationPage = async () => {
   return (
     <div className="space-y-12">
       <Header />
-      <div className="space-y-4 px-5">
+      <div className="space-y-4 px-5 md:px-20 lg:px-40">
         <Card>
           <CardHeader>
             <CardTitle>Identificação</CardTitle>

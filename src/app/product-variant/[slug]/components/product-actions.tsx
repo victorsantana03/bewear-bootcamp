@@ -38,7 +38,7 @@ const ProductActions = ({ productVariantId }: ProductActionsProps) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col space-y-4 px-5">
+      <div className="flex flex-col space-y-4 px-5 md:flex-row">
         <AddToCartButton
           productVariantId={productVariantId}
           quantity={quantity}
@@ -47,7 +47,6 @@ const ProductActions = ({ productVariantId }: ProductActionsProps) => {
           Comprar Agora
         </Button>
       </div>
-      ;
     </>
   );
 };

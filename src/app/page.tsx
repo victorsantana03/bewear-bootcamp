@@ -28,7 +28,7 @@ export default async function Home() {
     <>
       <Header />
       <div className="space-y-6">
-        <div className="px-5">
+        <div className="px-5 md:hidden">
           <Image
             src="/banner_01.png"
             width={0}
@@ -39,13 +39,23 @@ export default async function Home() {
           />
         </div>
 
+        <div className="hidden w-full justify-center bg-[linear-gradient(180deg,#7459ED_0%,#D4D7E4_100%)] px-5 md:flex md:items-center md:justify-center">
+          <Image
+            src="/banner_01.png"
+            width={600}
+            height={0}
+            alt="Leve uma vida com estilo"
+            className="object-cover"
+          />
+        </div>
+
         <ProductList products={products} title="Mais vendidos" />
 
         <div className="px-5">
           <CategorySelector categories={categories} />
         </div>
 
-        <div className="px-5">
+        <div className="px-5 md:hidden">
           <Image
             src="/banner_02.png"
             width={0}
@@ -53,6 +63,16 @@ export default async function Home() {
             alt="Seja autêntico"
             sizes="100vw"
             className="h-auto w-full"
+          />
+        </div>
+
+        <div className="hidden w-full justify-center px-5 md:flex md:items-center md:justify-center">
+          <Image
+            src="/banner_02.png"
+            width={600}
+            height={0}
+            alt="Seja autêntico"
+            className="object-cover"
           />
         </div>
 
