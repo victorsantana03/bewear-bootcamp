@@ -24,7 +24,7 @@ const ProductList = ({ products, title }: ProductListProps) => {
     el.scrollBy({ left: delta, behavior: "smooth" });
   };
   return (
-    <div className="space-y-4 pt-5 md:px-20 lg:px-40">
+    <div className="space-y-4 py-10 md:px-20 lg:px-40">
       <div className="flex justify-between">
         <h3 className="px-5 font-semibold md:text-lg">{title}</h3>
         <div className="flex gap-3">

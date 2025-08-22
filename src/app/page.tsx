@@ -66,7 +66,7 @@ export default async function Home() {
           />
         </div>
 
-        <div className="hidden w-full justify-center px-5 md:flex md:items-center md:justify-center">
+        <div className="hidden w-full justify-center px-5 py-10 md:flex md:items-center md:justify-center">
           <Image
             src="/banner_02.png"
             width={600}
